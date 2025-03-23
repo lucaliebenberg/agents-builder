@@ -8,12 +8,14 @@ import {
   useNodesState,
   useEdgesState,
   type OnConnect,
+  Panel,
 } from '@xyflow/react';
 
 import '@xyflow/react/dist/style.css';
 
 import { initialNodes, nodeTypes } from './nodes';
 import { initialEdges, edgeTypes } from './edges';
+import { AppSidebar } from './sidebar/Sidebar';
 
 export default function App() {
   const [nodes, , onNodesChange] = useNodesState(initialNodes);
@@ -37,6 +39,10 @@ export default function App() {
       <Background />
       <MiniMap />
       <Controls />
+
+      <Panel position="top-left">
+        <AppSidebar />
+      </Panel>
     </ReactFlow>
   );
 }
