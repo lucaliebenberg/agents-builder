@@ -19,12 +19,6 @@ export const initialNodes: AppNode[] = [
     position: { x: 0, y: 200 },
     data: { label: 'with React Flow' },
   },
-  {
-    id: 'e',
-    type: 'rag-agent',
-    position: { x: 0, y: 100 },
-    data: { label: 'creating a new node!' },
-  },
 ];
 
 export const nodeTypes = {

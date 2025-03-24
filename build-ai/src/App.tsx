@@ -9,6 +9,7 @@ import {
   useReactFlow,
   Background,
   Panel,
+  NodeTypes,
 } from '@xyflow/react';
 
 import '@xyflow/react/dist/style.css';
@@ -16,32 +17,28 @@ import '@xyflow/react/dist/style.css';
 import { Sidebar } from './sidebar/Sidebar';
 import { DnDProvider, useDnD } from './context/DNDProvider';
 import { AppNode } from './nodes/types';
+import { RagAgentNode } from './nodes/RagAgentNode';
+
+// Define node types
+const nodeTypes: NodeTypes = {
+  'rag-agent': RagAgentNode,
+  // Add other custom node types here
+};
 
 export const initialNodes: AppNode[] = [
-  { id: 'a', type: 'input', position: { x: 0, y: 0 }, data: { label: 'wire' } },
-  {
-    id: 'b',
-    type: 'position-logger',
-    position: { x: -100, y: 100 },
-    data: { label: 'drag me!' },
-  },
-  { id: 'c', position: { x: 100, y: 100 }, data: { label: 'your ideas' } },
-  {
-    id: 'd',
-    type: 'output',
-    position: { x: 0, y: 200 },
-    data: { label: 'with React Flow' },
-  },
+  // Your existing nodes...
   {
     id: 'e',
     type: 'rag-agent',
     position: { x: 0, y: 100 },
-    data: { label: 'creating a new node!' },
+    data: {
+      label: 'Rag Agent',
+      model: 'gpt-3.5-turbo',
+      temperature: 0.7,
+      systemPrompt: 'You are a helpful AI assistant.',
+    },
   },
 ];
-
-let id = 0;
-const getId = () => `dndnode_${id++}`;
 
 const DnDFlow = () => {
   const reactFlowWrapper = useRef(null);
@@ -66,11 +63,9 @@ const DnDFlow = () => {
   }, []);
 
   const onDrop = useCallback(
-    // @ts-ignore
     (event) => {
       event.preventDefault();
 
-      // check if the dropped element is valid
       if (!type) {
         return;
       }
@@ -79,17 +74,25 @@ const DnDFlow = () => {
         x: event.clientX,
         y: event.clientY,
       });
+
       const newNode = {
-        id: getId(),
+        id: `dndnode_${nodes.length + 1}`,
         type,
         position,
-        data: { label: `${type} node` },
+        data:
+          type === 'rag-agent'
+            ? {
+                label: 'New Rag Agent',
+                model: 'gpt-3.5-turbo',
+                temperature: 0.7,
+                systemPrompt: 'You are a helpful AI assistant.',
+              }
+            : { label: `${type} node` },
       };
 
-      // @ts-ignore
       setNodes((nds) => nds.concat(newNode));
     },
-    [screenToFlowPosition, type]
+    [screenToFlowPosition, type, nodes.length, setNodes]
   );
 
   return (
@@ -104,6 +107,7 @@ const DnDFlow = () => {
           onConnect={onConnect}
           onDrop={onDrop}
           onDragOver={onDragOver}
+          nodeTypes={nodeTypes}
           fitView
           style={{ backgroundColor: '#F7F9FB' }}
         >
@@ -111,11 +115,6 @@ const DnDFlow = () => {
           <Background />
         </ReactFlow>
       </div>
-      <Panel position="top-right">
-        <button onClick={() => zoomIn({ duration: 800 })}>zoom in</button>
-        <button onClick={() => zoomOut({ duration: 800 })}>zoom out</button>
-        <button onClick={handleTransform}>pan to center(0,0,1)</button>
-      </Panel>
     </div>
   );
 };

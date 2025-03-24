@@ -3,7 +3,6 @@ import { useDnD } from '../context/DNDProvider';
 
 export const Sidebar = () => {
   const [_, setType] = useDnD();
-  console.log(_);
 
   const onDragStart = (
     event: React.DragEvent<HTMLDivElement>,
@@ -11,40 +10,41 @@ export const Sidebar = () => {
   ) => {
     if (nodeType) setType!(nodeType);
     event.dataTransfer.effectAllowed = 'move';
+    event.dataTransfer.setData('application/reactflow', nodeType);
   };
 
   return (
-    <aside>
-      <div className="description">
-        <h1>Create your Agent</h1>
+    <aside className="w-60 bg-gray-100 p-4 border-r">
+      <div className="description mb-4">
+        <h1 className="text-xl font-bold">Create your Agent</h1>
       </div>
-      <div
-        className="dndnode input"
-        onDragStart={(event) => onDragStart(event, 'input')}
-        draggable
-      >
-        Input Node
-      </div>
-      <div
-        className="dndnode"
-        onDragStart={(event) => onDragStart(event, 'default')}
-        draggable
-      >
-        Default Node
-      </div>
-      <div
-        className="dndnode output"
-        onDragStart={(event) => onDragStart(event, 'output')}
-        draggable
-      >
-        Output Node
-      </div>
-      <div
-        className="dndnode rag-agent"
-        onDragStart={(event) => onDragStart(event, 'rag-agent')}
-        draggable
-      >
-        Rag Agent Node
+
+      <div className="space-y-3">
+        {[
+          {
+            type: 'rag-agent',
+            label: 'Rag Agent Node',
+            className: 'bg-purple-100 border-purple-500',
+          },
+        ].map(({ type, label, className }) => (
+          <div
+            key={type}
+            className={`
+              dndnode 
+              p-3 
+              border-2 
+              rounded-md 
+              cursor-grab 
+              hover:opacity-80 
+              active:cursor-grabbing 
+              ${className}
+            `}
+            onDragStart={(event) => onDragStart(event, type)}
+            draggable
+          >
+            {label}
+          </div>
+        ))}
       </div>
     </aside>
   );
