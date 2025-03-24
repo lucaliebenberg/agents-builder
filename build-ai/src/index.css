@@ -88,6 +88,10 @@ body {
   border-color: #ff0072;
 }
 
+.dndflow .dndnode.rag-agent {
+  border-color: #000000;
+}
+
 .dndflow .reactflow-wrapper {
   flex-grow: 1;
   height: 100%;

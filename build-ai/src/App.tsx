@@ -15,13 +15,28 @@ import '@xyflow/react/dist/style.css';
 
 import { Sidebar } from './sidebar/Sidebar';
 import { DnDProvider, useDnD } from './context/DNDProvider';
+import { AppNode } from './nodes/types';
 
-const initialNodes = [
+export const initialNodes: AppNode[] = [
+  { id: 'a', type: 'input', position: { x: 0, y: 0 }, data: { label: 'wire' } },
   {
-    id: '1',
-    type: 'input',
-    data: { label: 'input node' },
-    position: { x: 250, y: 5 },
+    id: 'b',
+    type: 'position-logger',
+    position: { x: -100, y: 100 },
+    data: { label: 'drag me!' },
+  },
+  { id: 'c', position: { x: 100, y: 100 }, data: { label: 'your ideas' } },
+  {
+    id: 'd',
+    type: 'output',
+    position: { x: 0, y: 200 },
+    data: { label: 'with React Flow' },
+  },
+  {
+    id: 'e',
+    type: 'rag-agent',
+    position: { x: 0, y: 100 },
+    data: { label: 'creating a new node!' },
   },
 ];
 
@@ -45,13 +60,11 @@ const DnDFlow = () => {
     []
   );
 
-  // @ts-ignore
   const onDragOver = useCallback((event) => {
     event.preventDefault();
     event.dataTransfer.dropEffect = 'move';
   }, []);
 
-  // @ts-ignore
   const onDrop = useCallback(
     // @ts-ignore
     (event) => {

@@ -39,6 +39,13 @@ export const Sidebar = () => {
       >
         Output Node
       </div>
+      <div
+        className="dndnode rag-agent"
+        onDragStart={(event) => onDragStart(event, 'rag-agent')}
+        draggable
+      >
+        Rag Agent Node
+      </div>
     </aside>
   );
 };
