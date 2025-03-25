@@ -25,20 +25,7 @@ const nodeTypes: NodeTypes = {
   // Add other custom node types here
 };
 
-export const initialNodes: AppNode[] = [
-  // Your existing nodes...
-  {
-    id: 'e',
-    type: 'rag-agent',
-    position: { x: 0, y: 100 },
-    data: {
-      label: 'Rag Agent',
-      model: 'gpt-3.5-turbo',
-      temperature: 0.7,
-      systemPrompt: 'You are a helpful AI assistant.',
-    },
-  },
-];
+export const initialNodes: AppNode[] = [];
 
 const DnDFlow = () => {
   const reactFlowWrapper = useRef(null);

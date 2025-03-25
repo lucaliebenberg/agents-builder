@@ -3,6 +3,7 @@ import { useDnD } from '../context/DNDProvider';
 
 export const Sidebar = () => {
   const [_, setType] = useDnD();
+  console.log;
 
   const onDragStart = (
     event: React.DragEvent<HTMLDivElement>,
